@@ -1,11 +1,25 @@
 const dbConn = require('./dbConn')
-const queryString = require('./QueryString').topup
+const queryString = require('./QueryString').game
 
-module.exports = class TopUpDao {
-  async add (cb_id, order_size, userid) {
+module.exports = class GameDao {
+  async query () {
     let conn = await dbConn()
     try {
-      await conn.query(queryString.add, [cb_id, order_size, 0, userid, null])
+      let result = await conn.query(queryString.query)
+      result = JSON.parse(JSON.stringify(result))
+      return result
+    } catch (e) {
+      console.log(e)
+      throw e
+    } finally {
+      await conn.release()
+      await conn.destroy()
+    }
+  }
+  async modIteration (iteration) {
+    let conn = await dbConn()
+    try {
+      await conn.query(queryString.modIteration, iteration)
       return true
     } catch (e) {
       console.log(e)
@@ -15,12 +29,11 @@ module.exports = class TopUpDao {
       await conn.destroy()
     }
   }
-  async queryByOrderId (orderid) {
+  async modTotalVolume (total_volume) {
     let conn = await dbConn()
     try {
-      let result = await conn.query(queryString.queryByOrderId, orderid)
-      result = JSON.parse(JSON.stringify(result))
-      return result
+      await conn.query(queryString.modTotalVolume, total_volume)
+      return true
     } catch (e) {
       console.log(e)
       throw e
@@ -29,24 +42,10 @@ module.exports = class TopUpDao {
       await conn.destroy()
     }
   }
-  async queryByUserId (userid) {
+  async modUserCount (user_count) {
     let conn = await dbConn()
     try {
-      let result = await conn.query(queryString.queryByUserId, userid)
-      result = JSON.parse(JSON.stringify(result))
-      return result
-    } catch (e) {
-      console.log(e)
-      throw e
-    } finally {
-      await conn.release()
-      await conn.destroy()
-    }
-  }
-  async modStatusByCbId (cb_id, status) {
-    let conn = await dbConn()
-    try {
-      await conn.query(queryString.modStatusByCbId, [status, cb_id])
+      await conn.query(queryString.modUserCount, user_count)
       return true
     } catch (e) {
       console.log(e)

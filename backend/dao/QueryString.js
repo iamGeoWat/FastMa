@@ -19,6 +19,7 @@ module.exports = {
   topup: {
     add: 'INSERT INTO topup VALUES (?, ?, ?, ?, ?)',
     queryByOrderId: 'SELECT * FROM topup WHERE orderid = ?',
+    queryByUserId: 'SELECT * FROM topup WHERE userid = ?',
     modStatusByCbId: 'UPDATE topup SET if_done = ? WHERE cb_id = ?'
   },
   racetrack: {
