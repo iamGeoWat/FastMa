@@ -4,13 +4,19 @@
   "description": "Server of FastMa.io",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "forever start account_server.js && forever start fund_server.js && forever start game_engine.js",
+    "dev": "node account_server.js && node fund_server.js && node game_engine.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@dfuse/eosws-js": "^0.11.11",
+    "axios": "^0.18.0",
     "eosjs": "^20.0.0",
     "express": "^4.16.4",
-    "promise-mysql": "^3.3.1"
+    "node-fetch": "^2.3.0",
+    "promise-mysql": "^3.3.1",
+    "ws": "^6.2.1"
   }
 }

@@ -14,7 +14,8 @@ module.exports = {
     queryByUserId: 'SELECT * FROM withdraw WHERE userid = ?'
   },
   txid_backup: {
-    add: 'INSERT INTO txid_backup VALUES ( ?, ?, ?)'
+    add: 'INSERT INTO txid_backup VALUES ( ?, ?, ?, ?)',
+    query: 'SELECT * FROM txid_backup'
   },
   topup: {
     add: 'INSERT INTO topup VALUES (?, ?, ?, ?, ?)',
@@ -33,7 +34,8 @@ module.exports = {
     query: 'SELECT * FROM game',
     modIteration: 'UPDATE game SET iteration = ?',
     modTotalVolume: 'UPDATE game SET total_volume = ?',
-    modUserCount: 'UPDATE game SET user_count = ?'
+    modUserCount: 'UPDATE game SET user_count = ?',
+    modBettingStatus: 'UPDATE game SET is_betting = ?'
   },
   betorder: {
     add: 'INSERT INTO betorder VALUES (?, ?, ?, ?, ?, ?)',
