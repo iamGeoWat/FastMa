@@ -13,9 +13,9 @@ module.exports = {
     queryByReqId: 'SELECT * FROM withdraw WHERE req_id = ?',
     queryByUserId: 'SELECT * FROM withdraw WHERE userid = ?'
   },
-  txid_backup: {
-    add: 'INSERT INTO txid_backup VALUES ( ?, ?, ?, ?)',
-    query: 'SELECT * FROM txid_backup'
+  blockid_backup: {
+    add: 'INSERT INTO blockid_backup VALUES ( ?, ?, ?, ?)',
+    query: 'SELECT * FROM blockid_backup'
   },
   topup: {
     add: 'INSERT INTO topup VALUES (?, ?, ?, ?, ?)',
