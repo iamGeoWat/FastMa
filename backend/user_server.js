@@ -41,6 +41,8 @@ app.post('/login', async (req, res) => {
     }
   } catch (e) {
     res.send(JSON.stringify(e))
+    throw e
+  
   }
 
 })
@@ -60,6 +62,8 @@ app.post('/register', async (req, res) => {
       res.send(JSON.stringify(registerSuccess))
     } catch (e) {
       res.send(JSON.stringify(unknownError))
+      throw e
+  
     }
   }
 })

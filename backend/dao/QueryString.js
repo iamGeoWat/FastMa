@@ -4,7 +4,8 @@ module.exports = {
     queryUsername: 'SELECT username FROM user',
     queryPasswordByUsername: 'SELECT password FROM user WHERE username = ?',
     queryByUsername: 'SELECT * FROM user WHERE username = ?',
-    queryByUserId: 'SELECT * FROM user WHERE userid = ?'
+    queryByUserId: 'SELECT * FROM user WHERE userid = ?',
+    modBalanceByUserId: 'UPDATE user SET balance = ? WHERE userid = ?'
   },
   withdraw: {
     add: 'INSERT INTO withdraw VALUES ( ?, ?, ?, ?, ?, ?, ?)',
@@ -21,6 +22,7 @@ module.exports = {
     add: 'INSERT INTO topup VALUES (?, ?, ?, ?, ?)',
     queryByOrderId: 'SELECT * FROM topup WHERE orderid = ?',
     queryByUserId: 'SELECT * FROM topup WHERE userid = ?',
+    queryByCbId: 'SELECT * FROM topup WHERE cb_id = ?',
     modStatusByCbId: 'UPDATE topup SET if_done = ? WHERE cb_id = ?'
   },
   racetrack: {
