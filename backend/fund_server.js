@@ -16,6 +16,8 @@ const TopUpDap = require('./dao/TopUpDao')
 const topUpDao = new TopUpDap()
 const UserDao = require('./dao/UserDao')
 const userDao = new UserDao()
+const WithdrawDao = require('./dao/WithdrawDao')
+const withdrawDao = new WithdrawDao()
 
 // 新建订单
 app.post('/topup', (req, res) => {
@@ -108,6 +110,78 @@ app.post('/webhook', async (req, res) => {
 })
 
 // 新建提现请求
+app.post('/withdraw', async (req, res) => {
+  let respMsg = { status: null, result: null }
+  try {
+    let jwtToken = req.get('Authorization')
+    let decodedToken = jwt.verify(jwtToken, jwtConfig.secret)
+    let tokenData = decodedToken.data
+    
+    let userid = tokenData.userid
+    let reqData = req.body
+    let amountToken = reqData.amount_token
+    let eosAccount = reqData.eos_account
+    let eosMemo = reqData.eos_memo
+    
+    axios.get('https://api.bitfinex.com/v2/ticker/tEOSUSD').then(async (result) => {
+  
+      let oldBalance = await userDao.queryByUserId(userid)
+      oldBalance = oldBalance[0].balance
+      if (oldBalance >= amountToken) {
+        let newBalance = oldBalance - amountToken
+        await userDao.modBalanceByUserId(newBalance, userid)
+      } else {
+        respMsg.status = 0
+        respMsg.result = 'insufficient token'
+        res.send(JSON.stringify(respMsg))
+      }
+      //减去余额
+      
+      let eosPriceInUSD = result.data[0]
+      let tokenInUSD = amountToken / 10
+      let amountEOS = tokenInUSD / eosPriceInUSD
+      await withdrawDao.add(userid, amountToken, amountEOS, eosAccount, eosMemo)
+      respMsg.status = 1
+      respMsg.result = 'create withdraw order successful'
+      res.send(JSON.stringify(respMsg))
+    })
+  } catch (e) {
+    respMsg.status = 0
+    res.send(JSON.stringify(respMsg))
+    throw e
+  }
+})
+// 获取提现信息
+app.get('/withdraw', async (req, res) => {
+  let respMsg = { status: null, result: null }
+  
+  try {
+    let jwtToken = req.get('Authorization')
+    let decodedToken = jwt.verify(jwtToken, jwtConfig.secret)
+    let tokenData = decodedToken.data
+    
+    let userid = tokenData.userid
+    let queryWithdrawResult = await withdrawDao.queryByUserId(userid)
+    
+    respMsg.status = 1
+    respMsg.result = queryWithdrawResult
+    
+    res.send(JSON.stringify(respMsg))
+  } catch (e) {
+    respMsg.status = 0
+    res.send(JSON.stringify(respMsg))
+    throw e
+  }
+})
+
 // 验证并且执行提现
+// let withdrawCd = 21600
+let withdrawCd = 10
+let withdrawEngine = setInterval(() => {
+  withdrawCd -= 1
+  if (withdrawCd === 0) {
+    
+  }
+}, 1000)
 
 app.listen(8802, () => console.log('fund server is running on port 8802.'))
