@@ -1,8 +1,8 @@
 const express = require('express')
 const app = express()
+const bodyParser = require('body-parser')
 const jwt = require('jsonwebtoken')
 const jwtConfig = require('./config/jwtConfig')
-const bodyParser = require('body-parser')
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -65,8 +65,8 @@ app.post('/register', async (req, res) => {
 })
 
 app.get('/userInfo', async (req, res) => {
-  let token = req.get("Authorization")
-  let decodedToken = jwt.verify(token, jwtConfig.secret)
+  let jwtToken = req.get("Authorization")
+  let decodedToken = jwt.verify(jwtToken, jwtConfig.secret)
   let tokenData = decodedToken.data
   
   let userid = tokenData.userid
