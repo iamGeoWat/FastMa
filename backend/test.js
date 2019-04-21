@@ -5,16 +5,12 @@ const fetch = require('node-fetch')
 const { JsSignatureProvider } = require('eosjs/dist/eosjs-jssig')
 const { TextDecoder, TextEncoder } = require('util')
 
-let httpEndpoint = 'https://publicapi-mainnet.eosauthority.com'
-let chainId = 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
-let pk = [eosConfig.privateKey]
-
-const signatureProvider = new JsSignatureProvider(pk)
+const signatureProvider = new JsSignatureProvider([eosConfig.privateKey])
 const rpc = new JsonRpc(eosConfig.endpoint, { fetch })
 const eosJsApi = new Api({ rpc, signatureProvider, textDecoder: new TextDecoder(), textEncoder: new TextEncoder() })
 
 async function f() {
-  let result = await eosJsApi.transact({
+  let transferResult = await eosJsApi.transact({
     actions: [{
       account: 'eosio.token',
       name: 'transfer',
@@ -33,7 +29,7 @@ async function f() {
     blocksBehind: 3,
     expireSeconds: 30
   })
-  console.log(result)
+  console.log(transferResult)
 }
 
 f()

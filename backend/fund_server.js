@@ -5,6 +5,17 @@ const axios = require('axios')
 const jwt = require('jsonwebtoken')
 const jwtConfig = require('./config/jwtConfig')
 
+const EOS = require('eosjs')
+const eosConfig = require('./config/eosConfig')
+const { Api, JsonRpc } = require('eosjs')
+const fetch = require('node-fetch')
+const { JsSignatureProvider } = require('eosjs/dist/eosjs-jssig')
+const { TextDecoder, TextEncoder } = require('util')
+
+const signatureProvider = new JsSignatureProvider([eosConfig.privateKey])
+const rpc = new JsonRpc(eosConfig.endpoint, { fetch })
+const eosJsApi = new Api({ rpc, signatureProvider, textDecoder: new TextDecoder(), textEncoder: new TextEncoder() })
+
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -176,11 +187,47 @@ app.get('/withdraw', async (req, res) => {
 
 // 验证并且执行提现
 // let withdrawCd = 21600
-let withdrawCd = 10
-let withdrawEngine = setInterval(() => {
+let withdrawCd = eosConfig.withdrawInterval
+let withdrawEngine = setInterval(async () => {
   withdrawCd -= 1
+  console.log(withdrawCd)
   if (withdrawCd === 0) {
-    
+    try {
+      let withdrawOrders = await withdrawDao.queryByStatus(0)
+      // console.log(withdrawOrders)
+      for (let i = 0; i < withdrawOrders.length; i++) {
+        let eosAmount = withdrawOrders[i].amount_eos.toFixed(4)
+        // console.log(eosAmount)
+        let eosMemo = withdrawOrders[i].eos_memo
+        let eosAccount = withdrawOrders[i].eos_account
+        let reqId = withdrawOrders[i].req_id
+        let transferResult = await eosJsApi.transact({
+          actions: [{
+            account: 'eosio.token',
+            name: 'transfer',
+            authorization: [{
+              actor: eosConfig.activeAccount,
+              permission: 'active'
+            }],
+            data: {
+              from: eosConfig.activeAccount,
+              to: eosAccount,
+              quantity: eosAmount + ' EOS',
+              memo: eosMemo
+            }
+          }]
+        }, {
+          blocksBehind: 3,
+          expireSeconds: 30
+        })
+        // console.log(transferResult)
+        await withdrawDao.modTxidByReqId(reqId, transferResult.transaction_id)
+        await withdrawDao.modStatusByReqId(reqId, 1)
+      }
+      withdrawCd = eosConfig.withdrawInterval
+    } catch (e) {
+      throw e
+    }
   }
 }, 1000)
 

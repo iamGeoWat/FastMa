@@ -8,11 +8,12 @@ module.exports = {
     modBalanceByUserId: 'UPDATE user SET balance = ? WHERE userid = ?'
   },
   withdraw: {
-    add: 'INSERT INTO withdraw VALUES ( ?, ?, ?, ?, ?, ?, ?)',
+    add: 'INSERT INTO withdraw VALUES ( ?, ?, ?, ?, ?, ?, ?, ?)',
     modStatusByReqId: 'UPDATE withdraw SET if_done = ? WHERE req_id = ?',
+    modTxidByReqId: 'UPDATE withdraw SET txid = ? WHERE req_id = ?',
     queryByStatus: 'SELECT * FROM withdraw WHERE if_done = ?',
     queryByReqId: 'SELECT * FROM withdraw WHERE req_id = ?',
-    queryByUserId: 'SELECT * FROM withdraw WHERE userid = ?'
+    queryByUserId: 'SELECT * FROM withdraw WHERE userid = ?',
   },
   blockid_backup: {
     add: 'INSERT INTO blockid_backup VALUES ( ?, ?, ?, ?)',

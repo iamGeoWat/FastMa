@@ -5,7 +5,7 @@ module.exports = class WithdrawDao {
   async add (userid, amount_token, amount_eos, eos_account, eos_memo) {
     let conn = await dbConn()
     try {
-      await conn.query(queryString.add, [userid, amount_token, amount_eos, 0, eos_account, eos_memo, null])
+      await conn.query(queryString.add, [userid, amount_token, amount_eos, 0, eos_account, eos_memo, null, null])
       return true
     } catch (e) {
       console.log(e)
@@ -19,6 +19,19 @@ module.exports = class WithdrawDao {
     let conn = await dbConn()
     try {
       await conn.query(queryString.modStatusByReqId, [status, req_id])
+      return true
+    } catch (e) {
+      console.log(e)
+      throw e
+    } finally {
+      await conn.release()
+      await conn.destroy()
+    }
+  }
+  async modTxidByReqId (req_id, txid) {
+    let conn = await dbConn()
+    try {
+      await conn.query(queryString.modTxidByReqId, [txid, req_id])
       return true
     } catch (e) {
       console.log(e)
