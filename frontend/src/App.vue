@@ -1,25 +1,39 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <div>
-      <p>
-        If Element is successfully added to this project, you'll see an
-        <code v-text="'<el-button>'"></code>
-        below
-      </p>
-      <el-button>el-button</el-button>
+    <div v-if="jwtToken === null">
+      <LoginComponent @loginSuccess="handleLogin"></LoginComponent>
     </div>
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div v-else>
+      <GameStage></GameStage>
+      <UserInfo v-if="jwtToken !== null" :jwt-token="jwtToken"></UserInfo>
+      <BettingOption></BettingOption>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import GameStage from './components/GameStage.vue'
+import BettingOption from './components/BettingOption.vue'
+import LoginComponent from './components/LoginComponent.vue'
+import UserInfo from './components/UserInfo.vue'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    GameStage,
+    BettingOption,
+    LoginComponent,
+    UserInfo
+  },
+  data() {
+    return {
+      jwtToken: null
+    }
+  },
+  methods: {
+    handleLogin(data) {
+      this.jwtToken = data
+    }
   }
 }
 </script>
@@ -29,8 +43,7 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  /*margin-top: 60px;*/
 }
 </style>

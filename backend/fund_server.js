@@ -18,7 +18,7 @@ const eosJsApi = new Api({ rpc, signatureProvider, textDecoder: new TextDecoder(
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
   next();
 });
 app.use(bodyParser.json())
@@ -60,10 +60,10 @@ app.post('/topup', (req, res) => {
         'X-CC-Version': '2018-03-22'
       }
     }).then(async (result) => {
-      await topUpDao.add(result.data.code, orderSize, userid)
+      await topUpDao.add(result.data.data.code, orderSize, userid)
       respMsg.status = 1
-      respMsg.payUrl = result.data.hosted_url
-      respMsg.cb_id = result.data.code
+      respMsg.payUrl = result.data.data.hosted_url
+      respMsg.cb_id = result.data.data.code
       res.send(JSON.stringify(respMsg))
     })
   } catch (e) {
@@ -190,7 +190,7 @@ app.get('/withdraw', async (req, res) => {
 let withdrawCd = eosConfig.withdrawInterval
 let withdrawEngine = setInterval(async () => {
   withdrawCd -= 1
-  console.log(withdrawCd)
+  // console.log(withdrawCd)
   if (withdrawCd === 0) {
     try {
       let withdrawOrders = await withdrawDao.queryByStatus(0)

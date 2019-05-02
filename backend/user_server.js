@@ -6,7 +6,7 @@ const jwtConfig = require('./config/jwtConfig')
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
   next();
 });
 
@@ -20,7 +20,6 @@ app.post('/login', async (req, res) => {
   let usernameFail = { code: 2, content: 'wrong username' }
   let unknownFail = { code: 3, content: 'unknown error' }
   let loginSuccess = { code: 0, content: 'login succeeded', token: null }
-  
   let account = req.body
   try {
     let queryResult = await userDao.queryPasswordByUsername(account.username)
@@ -40,7 +39,7 @@ app.post('/login', async (req, res) => {
       res.send(JSON.stringify(unknownFail))
     }
   } catch (e) {
-    res.send(JSON.stringify(e))
+    res.send(JSON.stringify(unknownFail))
     throw e
   
   }
