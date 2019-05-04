@@ -1,6 +1,6 @@
 <template>
     <div>
-        <!--<el-button @click="runStart">Start</el-button>-->
+        <el-button @click="runStart">Start</el-button>
         <div id="game_body"></div>
     </div>
 </template>
