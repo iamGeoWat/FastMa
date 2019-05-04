@@ -133,29 +133,29 @@ app.post('/withdraw', async (req, res) => {
     let amountToken = reqData.amount_token
     let eosAccount = reqData.eos_account
     let eosMemo = reqData.eos_memo
-    
-    axios.get('https://api.bitfinex.com/v2/ticker/tEOSUSD').then(async (result) => {
   
-      let oldBalance = await userDao.queryByUserId(userid)
-      oldBalance = oldBalance[0].balance
-      if (oldBalance >= amountToken) {
-        let newBalance = oldBalance - amountToken
-        await userDao.modBalanceByUserId(newBalance, userid)
-      } else {
-        respMsg.status = 0
-        respMsg.result = 'insufficient token'
+    let oldBalance = await userDao.queryByUserId(userid)
+    oldBalance = oldBalance[0].balance
+    // console.log(parseInt(amountToken))
+    if (parseInt(oldBalance) >= amountToken && amountToken > 0) {
+      let newBalance = oldBalance - amountToken
+      await userDao.modBalanceByUserId(newBalance, userid)
+      axios.get('https://api.bitfinex.com/v2/ticker/tEOSUSD').then(async (result) => {
+        let eosPriceInUSD = result.data[0]
+        let tokenInUSD = amountToken / 10
+        let amountEOS = tokenInUSD / eosPriceInUSD
+        await withdrawDao.add(userid, amountToken, amountEOS, eosAccount, eosMemo)
+        respMsg.status = 1
+        respMsg.result = 'create withdraw order successful'
         res.send(JSON.stringify(respMsg))
-      }
-      //减去余额
-      
-      let eosPriceInUSD = result.data[0]
-      let tokenInUSD = amountToken / 10
-      let amountEOS = tokenInUSD / eosPriceInUSD
-      await withdrawDao.add(userid, amountToken, amountEOS, eosAccount, eosMemo)
-      respMsg.status = 1
-      respMsg.result = 'create withdraw order successful'
+      })
+    } else {
+      respMsg.status = 0
+      respMsg.result = 'insufficient token'
       res.send(JSON.stringify(respMsg))
-    })
+    }
+    //减去余额
+
   } catch (e) {
     respMsg.status = 0
     res.send(JSON.stringify(respMsg))
