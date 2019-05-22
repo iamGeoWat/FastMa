@@ -37,3 +37,5 @@
 	"isBetting": 0,
 	"track_win": 3
 }
+
+[{"total_token": 13,"user_orders": [{"userid": 001,"bet": 9},{"userid": 002,"bet": 4}],},{"total_token": 20,"user_orders": [{"userid": 001,"bet": 16},{"userid": 002,"bet": 4}],},

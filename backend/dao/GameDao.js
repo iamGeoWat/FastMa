@@ -55,10 +55,23 @@ module.exports = class GameDao {
       await conn.destroy()
     }
   }
-  async modBettingStatus (status) {
+  // async modBettingStatus (status) {
+  //   let conn = await dbConn()
+  //   try {
+  //     await conn.query(queryString.modBettingStatus, status)
+  //     return true
+  //   } catch (e) {
+  //     console.log(e)
+  //     throw e
+  //   } finally {
+  //     await conn.release()
+  //     await conn.destroy()
+  //   }
+  // }
+  async modRacetrackRow (row) {
     let conn = await dbConn()
     try {
-      await conn.query(queryString.modBettingStatus, status)
+      await conn.query(queryString.modRacetrackRow, row)
       return true
     } catch (e) {
       console.log(e)

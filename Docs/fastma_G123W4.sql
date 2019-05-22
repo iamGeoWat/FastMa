@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 22/05/2019 17:51:34
+ Date: 22/05/2019 18:20:52
 */
 
 SET NAMES utf8mb4;
@@ -134,14 +134,5 @@ CREATE TABLE `withdraw` (
   `req_id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`req_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
-
--- ----------------------------
--- Records of withdraw
--- ----------------------------
-BEGIN;
-INSERT INTO `withdraw` VALUES (1, 10, 0.02, 1, 'winterwinter', 'fastma withdraw', 'b481be6c674597758fa66649b1cf33b2803626e90a24309bf46ad3e8836b2441', 1);
-INSERT INTO `withdraw` VALUES (2, 10, 0.1, 1, 'winterwinter', '132498', '0314cb02729960b512d0ab44093b2735610a6f6da7f2f51f5239e2bca48e8aca', 2);
-INSERT INTO `withdraw` VALUES (3, 25, 0.001, 1, 'geowatcomeos', 'fastma withdraw', '809f352cd63a03f98d2b33c6598ccdb1e5b2105cec7e51989ab51299b68d6e7d', 3);
-COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
