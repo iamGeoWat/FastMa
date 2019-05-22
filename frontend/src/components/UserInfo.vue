@@ -11,7 +11,7 @@
                 <el-button style="margin-top: 10px; font-family: 'Noto Serif SC', serif;" @click="toggleWithdrawHistory">提现历史</el-button>
             </div>
             <div v-show="showTopUp">
-                <el-input style="margin-top: 10px;" v-model="order_size" placeholder="Token数（100的倍数）" type="number"></el-input>
+                <el-input autocapitalize="off" autocorrect="off" style="margin-top: 10px;" v-model="order_size" placeholder="Token数（100的倍数）" type="number"></el-input>
                 <el-button @click="goTopUp" type="primary" style="margin-top: 10px; font-family: 'Noto Serif SC', serif;">去购买</el-button>
                 <el-button style=" font-family: 'Noto Serif SC', serif;" @click="toggleTopUp">取消</el-button>
             </div>
@@ -30,9 +30,9 @@
                 <el-button style="margin-top: 10px; font-family: 'Noto Serif SC', serif;" @click="toggleTopUpHistory">返回</el-button>
             </div>
             <div v-show="showWithdraw">
-                <el-input style="margin-top: 10px" v-model="eos_account" placeholder="EOS 账户名"></el-input>
-                <el-input style="margin-top: 10px" v-model="eos_memo" placeholder="Memo (提现到交易所必须填写充值Memo)"></el-input>
-                <el-input style="margin-top: 10px" v-model="withdraw_amount" placeholder="提现的 Token 数（100的倍数）" type="number"></el-input>
+                <el-input autocapitalize="off" autocorrect="off" style="margin-top: 10px" v-model="eos_account" placeholder="EOS 账户名"></el-input>
+                <el-input autocapitalize="off" autocorrect="off" style="margin-top: 10px" v-model="eos_memo" placeholder="Memo (提现到交易所必须填写充值Memo)"></el-input>
+                <el-input autocapitalize="off" autocorrect="off" style="margin-top: 10px" v-model="withdraw_amount" placeholder="提现的 Token 数（100的倍数）" type="number"></el-input>
                 <el-button type="primary" style="margin-top: 10px; font-family: 'Noto Serif SC', serif;" @click="goWithdraw">提现</el-button>
                 <el-button style="margin-top: 10px; font-family: 'Noto Serif SC', serif;" @click="toggleWithdraw">返回</el-button>
             </div>

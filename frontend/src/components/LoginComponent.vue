@@ -3,8 +3,8 @@
         <el-card class="form-card" v-if="!card_shown">
             <div style="text-align: center">
                 <span style="font-size: 24px">请登录</span>
-                <div style="margin-top: 10px;"><label style="width: 30%">账户名：</label><el-input v-model="username" style="width: 70%"></el-input></div>
-                <div style="margin-top: 10px;"><label style="width: 30%">&nbsp;&nbsp;&nbsp;&nbsp;密码：</label><el-input v-model="password" style="width: 70%" show-password></el-input></div>
+                <div style="margin-top: 10px;"><label style="width: 30%">账户名：</label><el-input autocapitalize="off" autocorrect="off" v-model="username" style="width: 70%"></el-input></div>
+                <div style="margin-top: 10px;"><label style="width: 30%">&nbsp;&nbsp;&nbsp;&nbsp;密码：</label><el-input autocapitalize="off" autocorrect="off" v-model="password" style="width: 70%" show-password></el-input></div>
                 <div>
                     <el-button @click="doLogin" type="primary" style="margin-top: 10px; font-family: 'Noto Serif SC', serif;">登录</el-button>
                     <el-button @click="switchCard" style="margin-top: 10px; font-family: 'Noto Serif SC', serif;">还没有账户，注册</el-button>
@@ -14,9 +14,9 @@
         <el-card class="form-card" v-if="card_shown">
             <div style="text-align: center">
                 <span style="font-size: 24px">请注册</span>
-                <div style="margin-top: 10px;"><label style="width: 30%">账户名：</label><el-input v-model="username" style="width: 70%"></el-input></div>
-                <div style="margin-top: 10px;"><label style="width: 30%">&nbsp;&nbsp;&nbsp;&nbsp;密码：</label><el-input v-model="password" style="width: 70%" show-password></el-input></div>
-                <div style="margin-top: 10px;"><label style="width: 30%;">确认密码：</label><el-input v-model="confirm_password" style="width: 70%" show-password></el-input>&nbsp;&nbsp;&nbsp;</div>
+                <div style="margin-top: 10px;"><label style="width: 30%">账户名：</label><el-input autocapitalize="off" autocorrect="off" v-model="username" style="width: 70%"></el-input></div>
+                <div style="margin-top: 10px;"><label style="width: 30%">&nbsp;&nbsp;&nbsp;&nbsp;密码：</label><el-input autocapitalize="off" autocorrect="off" v-model="password" style="width: 70%" show-password></el-input></div>
+                <div style="margin-top: 10px;"><label style="width: 30%;">确认密码：</label><el-input autocapitalize="off" autocorrect="off" v-model="confirm_password" style="width: 70%" show-password></el-input>&nbsp;&nbsp;&nbsp;</div>
                 <div>
                     <el-button @click="doRegister" type="primary" style="margin-top: 10px; font-family: 'Noto Serif SC', serif;">注册</el-button>
                     <el-button @click="switchCard" style="margin-top: 10px; font-family: 'Noto Serif SC', serif;">已有账号，登录</el-button>
