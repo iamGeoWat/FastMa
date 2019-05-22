@@ -1,0 +1,17 @@
+# Game settings
+source_url=https://mainnet.eos.dfuse.io/v0/block_id/by_time
+token_url=https://auth.dfuse.io/v1/auth/issue
+cold_time=1800
+racetrack_quantity=8
+win_distance=100
+betting_time=600
+
+# Betting config
+cut=0.1
+
+# Database config
+db.hostname=localhost
+db.port=3306
+db.username=root
+db.password=123
+db.database_name=fastma
