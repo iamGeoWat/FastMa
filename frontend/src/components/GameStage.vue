@@ -1,11 +1,11 @@
 <template>
     <div>
-        <el-button @click="runStart">Start</el-button>
         <div id="game_body"></div>
     </div>
 </template>
 
 <script>
+  import axios from 'axios'
   import * as PIXI from 'pixi.js'
   let pixiApp = null
   let containers = {
@@ -23,7 +23,8 @@
     road_decoration: null,
     track_floor: null,
     sign: null,
-    audiences: []
+    audiences: [],
+    waitingHorses: []
   }
 
   let state = function () {}
@@ -34,9 +35,61 @@
 
   export default {
     name: "GameStage",
+    props: {
+      jwtToken: String
+    },
+    data() {
+      return {
+        engineIntv: 5000,
+        highIntv: 1000,
+        lowIntv: 5000,
+        loaderEngine: null,
+        distances: [],
+        track_win: [],
+        hasWinner: false
+      }
+    },
     methods: {
-      runStart() {
-        state = this.horseRunRandomlyState
+      loader() {
+        axios.get(this.gameServer + '/racetracks', {
+          headers: {
+            'Authorization': this.jwtToken
+          }
+        }).then((res)=>{
+          let info = JSON.parse(res.data)
+          if (parseInt(info.isGaming && this.engineIntv === this.lowIntv)) {
+            for (let i = 0; i < sprites.waitingHorses.length; i++ ) {
+              containers.fullView.removeChild(sprites.waitingHorses[i])
+              containers.fullView.addChild(sprites.horses[i])
+            }
+            state = this.runState
+            this.track_win = []
+            this.hasWinner = false
+
+            clearInterval(this.loaderEngine)
+            this.engineIntv = this.highIntv
+            this.loaderEngine = setInterval(this.loader, this.engineIntv)
+          } else if (!parseInt(info.isGaming) && this.engineIntv === this.highIntv) {
+            for (let i = 0; i < info.track_win.length; i++) {
+              this.track_win.push(info.track_win[i])
+            }
+            this.hasWinner = true
+            for (let i = 0; i < sprites.horses[i].length; i++ ) {
+              sprites.waitingHorses[i].x = sprites.horses[i].x
+              containers.fullView.removeChild(sprites.horses[i])
+              containers.fullView.addChild(sprites.waitingHorses[i])
+            }
+
+            state = this.endingState
+
+            clearInterval(this.loaderEngine)
+            this.engineIntv = this.lowIntv
+            this.loaderEngine = setInterval(this.loader, this.engineIntv)
+          }
+          for (let i = 0; i < info.distances.length; i++) {
+            this.distances[i] = parseInt(info.distances[i])
+          }
+        })
       },
       cameraScroll() {
         let horsesX = []
@@ -65,10 +118,29 @@
         }
         this.cameraScroll()
         if (containers.fullView.x <= -2350 + window.innerWidth) {
-          state = this.pauseState
+          state = this.endingState
         }
       },
-      pauseState() {},
+      runState() {
+        for (let i = 0; i < sprites.horses.length; i++ ) {
+          sprites.horses[i].x = this.distances[i] * (window.innerWidth + 150)/100
+        }
+        this.cameraScroll()
+        // if (containers.fullView.x <= -2350 + window.innerWidth) {
+        //   state = this.endingState
+        // }
+      },
+      endingState() {
+        setTimeout(()=>{
+          let horseXOffset = 8
+          let horsesToLeft = 20
+          for (let i = 0; i < sprites.waitingHorses.length; i++ ) {
+            sprites.waitingHorses[i].x = horsesToLeft + horseXOffset * sprites.waitingHorses.length - horseXOffset * (i-1)
+          }
+          state = this.waitingState
+        }, 10000)
+      },
+      waitingState() {},
       gameLoop(delta) {
         state(delta)
       },
@@ -217,7 +289,17 @@
           sprites.horses[i].play()
           sprites.horses[i].x = horsesToLeft + horseXOffset * sprites.horses.length - horseXOffset * (i-1)
           sprites.horses[i].y = horsesToTop + horseYOffset * (i-1)
-          containers.fullView.addChild(sprites.horses[i])
+          // containers.fullView.addChild(sprites.horses[i])
+        }
+        // load waiting horses
+        for (let j = 1; j <= 8; j++) {
+          sprites.waitingHorses.push(new PIXI.Sprite(sheet.textures[`horse${j}_01.png`]))
+        }
+        for (let i = 0; i < sprites.waitingHorses.length; i++) {
+          sprites.waitingHorses[i].vx = 0
+          sprites.waitingHorses[i].x = horsesToLeft + horseXOffset * sprites.waitingHorses.length - horseXOffset * (i-1)
+          sprites.waitingHorses[i].y = horsesToTop + horseYOffset * (i-1)
+          containers.fullView.addChild(sprites.waitingHorses[i])
         }
         // load background 2nd layer TOTAL WIDTH 2400
         for (let i = 0; i < 10; i++) {
@@ -259,6 +341,8 @@
       document.getElementById('game_body').appendChild(pixiApp.view)
       // load textures
       PIXI.loader.add("images/fastma_spritesheet.json").load(this.gameLoadSetup)
+      // start loader engine
+      this.loaderEngine = setInterval(this.loader, this.engineIntv)
     }
   }
 </script>

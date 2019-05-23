@@ -27,7 +27,7 @@ module.exports = {
     modStatusByCbId: 'UPDATE topup SET if_done = ? WHERE cb_id = ?'
   },
   racetrack: {
-    add: 'INSERT INTO racetrack VALUES ( ?, ?, ?, ?, ?)',
+    add: 'INSERT INTO racetrack VALUES ( ?, ?, ?, ?, ?, ?)',
     queryRacetrackByIteration: 'SELECT * FROM racetrack WHERE iteration = ?',
     modStatusByRacetrackId: 'UPDATE racetrack SET if_win = ? WHERE racetrack_id = ?',
     modRaceDistanceByRacetrackId: 'UPDATE racetrack SET race_distance = ? WHERE racetrack_id = ?',

@@ -4,26 +4,29 @@
       <LoginComponent @loginSuccess="handleLogin"></LoginComponent>
     </div>
     <div v-else>
-      <GameStage></GameStage>
+      <GameStage v-if="jwtToken !== null" :jwt-token="jwtToken"></GameStage>
       <UserInfo v-if="jwtToken !== null" :jwt-token="jwtToken"></UserInfo>
-      <BettingOption></BettingOption>
+      <Betting v-if="jwtToken !== null" :jwt-token="jwtToken"></Betting>
+      <GameInfo v-if="jwtToken !== null" :jwt-token="jwtToken"></GameInfo>
     </div>
   </div>
 </template>
 
 <script>
 import GameStage from './components/GameStage.vue'
-import BettingOption from './components/BettingOption.vue'
+import Betting from './components/Betting.vue'
 import LoginComponent from './components/LoginComponent.vue'
 import UserInfo from './components/UserInfo.vue'
+import GameInfo from './components/GameInfo'
 
 export default {
   name: 'app',
   components: {
     GameStage,
-    BettingOption,
+    Betting,
     LoginComponent,
-    UserInfo
+    UserInfo,
+    GameInfo
   },
   data() {
     return {

@@ -12,8 +12,8 @@ const UserDao = require('./dao/UserDao')
 const userDao = new UserDao()
 const BetOrderDao = require('./dao/BetOrderDao')
 const betOrderDao = new BetOrderDao()
-const RacetrackDao = require('./dao/RaceTrackDao')
-const racetrackDao = new RacetrackDao()
+// const RacetrackDao = require('./dao/RaceTrackDao')
+// const racetrackDao = new RacetrackDao()
 const GameDao = require('./dao/GameDao')
 const gameDao = new GameDao()
 const BlockidBackupDao = require('./dao/BlockidBackupDao')
@@ -21,7 +21,7 @@ const blockidBackupDao = new BlockidBackupDao()
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
   next();
 });
 app.use(bodyParser.json())
@@ -49,19 +49,16 @@ app.post('/order', async (req, res) => {
         let newBalance = oldBalance - stake_token
         await userDao.modBalanceByUserId(newBalance, userid) //todo: 验证返回值得到是否mod成功
   
-        redis.get('racetracks').then((result) => {
-          result = JSON.parse(result)
-          result.racetracks[parseInt(racetrack_id)].total_token += stake_token
-          result.racetracks[parseInt(racetrack_id)].user_orders.push({ userid: userid, bet: stake_token})
-          result.iteration = 3
-          result = JSON.stringify(result)
-          redis.set('racetracks', result)
-          redis.get('iteration').then(async (iteration) => {
-            await betOrderDao.add(userid, stake_token, racetrack_id, iteration)
-            respMsg.status = 1
-            respMsg.content = '下单成功'
-            res.send(JSON.stringify(respMsg))
-          })
+        redis.get('racetracks').then(async (result) => {
+          let racetracks = JSON.parse(result)
+          racetracks.racetracks[parseInt(racetrack_id)].total_token = parseInt(racetracks.racetracks[parseInt(racetrack_id)].total_token) + parseInt(stake_token)
+          racetracks.racetracks[parseInt(racetrack_id)].user_orders.push({ userid: userid, bet: stake_token})
+          let racetracksToStore = JSON.stringify(racetracks)
+          redis.set('racetracks', racetracksToStore)
+          await betOrderDao.add(userid, stake_token, racetrack_id, racetracks.iteration)
+          respMsg.status = 1
+          respMsg.content = '下单成功'
+          res.send(JSON.stringify(respMsg))
         })
       } else {
         respMsg.status = 0

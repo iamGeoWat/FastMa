@@ -74,6 +74,11 @@
         withdrawHistoryData: []
       }
     },
+    mounted() {
+      this.eventBus.$on('updateUserInfo', () => {
+        this.getUserInfo()
+      })
+    },
     methods: {
       toggleWithdrawHistory() {
         this.showWithdrawHistory = !this.showWithdrawHistory

@@ -2,10 +2,10 @@ const dbConn = require('./dbConn')
 const queryString = require('./QueryString').racetrack
 
 module.exports = class RaceTrackDao {
-  async add (racetrack_id, iteration) {
+  async add (racetrack_id, iteration, which_track) {
     let conn = await dbConn()
     try {
-      await conn.query(queryString.add, [racetrack_id, 0, 0, 0, iteration])
+      await conn.query(queryString.add, [racetrack_id, 0, 0, 0, iteration, which_track])
       return true
     } catch (e) {
       console.log(e)
