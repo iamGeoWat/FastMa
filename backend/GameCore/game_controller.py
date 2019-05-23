@@ -33,7 +33,7 @@ class GameController:
         n_game = models.Game(it=self.game_condition['iteration'],
                              track_row=self.game_condition['racetrack_row'])
         n_game.insert()
-        get_redis().set('is_betting', 1)
+        get_redis().set('isBetting', 1)
         get_redis().set('iteration', self.game_condition['iteration'])
 
     """
@@ -44,8 +44,8 @@ class GameController:
 
         # 比赛开始
         flag = 1
-        redis.set('is_betting', 0)
-        redis.set('is_gaming', 1)
+        redis.set('isBetting', 0)
+        redis.set('isGaming', 1)
         wins = []
         time.sleep(1)
         while flag == 1:
@@ -108,7 +108,7 @@ class GameController:
             tracks[i].which_track = i + 1
             tracks[i].insert()
 
-        redis.set('is_gaming', 0)
+        redis.set('isGaming', 0)
 
     """
     分配奖励
