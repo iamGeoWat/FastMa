@@ -56,7 +56,7 @@
             'Authorization': this.jwtToken
           }
         }).then((res)=>{
-          let info = JSON.parse(res.data)
+          let info = JSON.parse(JSON.stringify(res.data))
           if (parseInt(info.isGaming && this.engineIntv === this.lowIntv)) {
             for (let i = 0; i < sprites.waitingHorses.length; i++ ) {
               containers.fullView.removeChild(sprites.waitingHorses[i])

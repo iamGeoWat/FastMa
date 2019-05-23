@@ -152,7 +152,7 @@ class GameController:
         for user in user_win_orders:
             n_user = models.User(user['userid'])
             # 计算赢家获得的token
-            received = token_lost * (user['bet'] / token_win) * (1 - config.properties['cut'])
+            received = token_lost * (int(user['bet']) / token_win) * (1 - config.properties['cut'])
             n_user.add_bet(received)
 
     """

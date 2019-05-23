@@ -1,5 +1,5 @@
 <template>
-    <el-card>
+    <el-card style="margin-top: 10px">
         <div slot="header">
             游戏状态信息
         </div>
@@ -50,9 +50,11 @@
             'Authorization': this.jwtToken
           }
         }).then((res)=>{
-          let info = JSON.parse(res.data)
+          console.log(res.data)
+          let info = JSON.parse(JSON.stringify(res.data))
           this.game_status.isGaming = parseInt(info.isGaming)
           this.game_status.isBetting = parseInt(info.isBetting)
+          this.racetracks = []
           for (let i = 0; i < info.racetracks.length; i++) {
             this.racetracks.push({total_token: info.racetracks[i].total_token, distance: info.distances[i]})
           }
