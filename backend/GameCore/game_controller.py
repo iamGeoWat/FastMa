@@ -124,6 +124,8 @@ class GameController:
         # 获取整场游戏的总token数、总参与人数以及赢家输家的总token数
         token_lost = 0
         token_win = 0
+        self.game_condition['total_volume'] = 0
+        self.game_condition['user_count'] = 0
         for i, race in enumerate(race_list):
             self.game_condition['total_volume'] += race['total_token']
             self.game_condition['user_count'] += len(race['user_orders'])
@@ -159,6 +161,8 @@ class GameController:
     def next_iteration(self):
         n_game = models.Game(it=self.game_condition['iteration'],
                              track_row=self.game_condition['racetrack_row'])
+        n_game.total_volume = self.game_condition['total_volume']
+        n_game.user_count = self.game_condition['user_count']
         n_game.insert()
         next_i = self.game_condition['iteration'] + 1
         add_iteration(next_i)
