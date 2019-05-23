@@ -18,8 +18,10 @@ class GameController:
         self.cold_time = int(config.properties['cold_time'])
         self.racetracks = [0] * int(config.properties['racetrack_quantity'])
         self.token_dict = self.get_token()
-        self.game_condition = models.Game(it=get_current_iteration(),
-                                          track_row=config.properties['racetrack_quantity'])
+        self.game_condition = {'iteration': get_current_iteration(),
+                               'racetrack_row': config.properties['racetrack_quantity']}
+        # self.game_condition = models.Game(it=get_current_iteration(),
+        #                                   track_row=config.properties['racetrack_quantity'])
         # self.iteration = get_current_iteration()
         self.bet_time = int(config.properties['betting_time'])
 
@@ -27,10 +29,12 @@ class GameController:
     更新游戏状态，在数据库中插入游戏
     """
     def init_game(self):
-        self.game_condition.iteration = get_current_iteration()
-        self.game_condition.insert()
+        self.game_condition['iteration'] = get_current_iteration()
+        n_game = models.Game(it=self.game_condition['iteration'],
+                             track_row=self.game_condition['racetrack_row'])
+        n_game.insert()
         get_redis().set('is_betting', 1)
-        get_redis().set('iteration', self.game_condition.iteration)
+        get_redis().set('iteration', self.game_condition['iteration'])
 
     """
     开始一轮游戏
@@ -99,7 +103,7 @@ class GameController:
         for i, race_d in enumerate(self.racetracks):
             tracks[i].race_distance = race_d
             tracks[i].if_win = 1 if i in wins else 0
-            tracks[i].iteration = self.game_condition.iteration
+            tracks[i].iteration = self.game_condition['iteration']
             tracks[i].stake_token = race_list[i]['total_token']
             tracks[i].which_track = i + 1
             tracks[i].insert()
@@ -117,8 +121,8 @@ class GameController:
         token_lost = 0
         token_win = 0
         for i, race in enumerate(race_list):
-            self.game_condition.total_volume += race['total_token']
-            self.game_condition.user_count += len(race['user_orders'])
+            self.game_condition['total_volume'] += race['total_token']
+            self.game_condition['user_count'] += len(race['user_orders'])
             if i in r_win:
                 token_win += race['total_token']
                 continue
@@ -149,8 +153,10 @@ class GameController:
     保存游戏状态到数据库，并更新condition.txt文件
     """
     def next_iteration(self):
-        self.game_condition.insert()
-        next_i = self.game_condition.iteration + 1
+        n_game = models.Game(it=self.game_condition['iteration'],
+                             track_row=self.game_condition['racetrack_row'])
+        n_game.insert()
+        next_i = self.game_condition['iteration'] + 1
         add_iteration(next_i)
 
     """
