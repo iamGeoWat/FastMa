@@ -33,8 +33,10 @@ class GameController:
         n_game = models.Game(it=self.game_condition['iteration'],
                              track_row=self.game_condition['racetrack_row'])
         n_game.insert()
-        get_redis().set('isBetting', 1)
-        get_redis().set('iteration', self.game_condition['iteration'])
+        redis = get_redis()
+
+        redis.set('isBetting', 1)
+        redis.set('iteration', self.game_condition['iteration'])
 
     """
     开始一轮游戏
@@ -96,7 +98,7 @@ class GameController:
                 wins_id.append(i['id'])
         redis.set('track_win', json.dumps(wins_id))
 
-        race_list = json.loads(get_redis().get('racetracks'))
+        race_list = json.loads(str(redis.get('racetracks'), encoding='utf-8'))
 
         # 将赛道结果保存至数据库
         tracks = [models.RaceTrack()] * int(config.properties['racetrack_quantity'])
@@ -114,8 +116,10 @@ class GameController:
     分配奖励
     """
     def reward(self):
-        race_list = json.loads(get_redis().get('racetracks'))
-        r_win = json.loads(get_redis().get('track_win'))
+        redis = get_redis()
+
+        race_list = json.loads(str(redis.get('racetracks'), encoding='utf-8'))
+        r_win = json.loads(str(redis.get('track_win'), encoding='utf-8'))
 
         # 获取整场游戏的总token数、总参与人数以及赢家输家的总token数
         token_lost = 0
