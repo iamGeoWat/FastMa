@@ -50,7 +50,7 @@
             'Authorization': this.jwtToken
           }
         }).then((res)=>{
-          console.log(res.data)
+          // console.log(res.data)
           let info = JSON.parse(JSON.stringify(res.data))
           this.game_status.isGaming = parseInt(info.isGaming)
           this.game_status.isBetting = parseInt(info.isBetting)
