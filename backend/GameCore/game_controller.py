@@ -110,7 +110,7 @@ class GameController:
     分配奖励
     """
     def reward(self):
-        race_list = json.loads(get_redis().get('racetracks'))['racetracks']
+        race_list = json.loads(get_redis().get('racetracks'))
         r_win = json.loads(get_redis().get('track_win'))
 
         # 获取整场游戏的总token数、总参与人数以及赢家输家的总token数
