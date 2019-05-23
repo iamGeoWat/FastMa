@@ -100,6 +100,7 @@ class GameController:
             tracks[i].if_win = 1 if i in wins else 0
             tracks[i].iteration = self.game_condition.iteration
             tracks[i].stake_token = race_list[i]['total_token']
+            tracks[i].which_track = i + 1
             tracks[i].insert()
 
         redis.set('is_gaming', 0)

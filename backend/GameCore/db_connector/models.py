@@ -18,6 +18,7 @@ class RaceTrack(Base):
     race_distance = Column(Integer, nullable=True)
     if_win = Column(Integer, nullable=True)
     iteration = Column(Integer, nullable=True)
+    which_track = Column(Integer, nullable=True)
 
     def insert(self):
         session = DBSession()
