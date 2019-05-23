@@ -2,10 +2,10 @@ const dbConn = require('./dbConn')
 const queryString = require('./QueryString').blockid_backup
 
 module.exports = class BlockidBackupDao {
-  async add (blockid, selected) {
+  async add (blockid) {
     let conn = await dbConn()
     try {
-      await conn.query(queryString.add, [blockid, selected, null, null])
+      await conn.query(queryString.add, [blockid, null, null])
       return true
     } catch (e) {
       console.log(e)

@@ -30,6 +30,7 @@ class GameController:
         self.game_condition.iteration = get_current_iteration()
         self.game_condition.insert()
         get_redis().set('is_betting', 1)
+        get_redis().set('iteration', self.game_condition.iteration)
 
     """
     开始一轮游戏
