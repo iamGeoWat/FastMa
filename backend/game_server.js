@@ -51,14 +51,16 @@ app.post('/order', async (req, res) => {
   
         redis.get('racetracks').then(async (result) => {
           let racetracks = JSON.parse(result)
-          racetracks.racetracks[parseInt(racetrack_id)].total_token = parseInt(racetracks.racetracks[parseInt(racetrack_id)].total_token) + parseInt(stake_token)
-          racetracks.racetracks[parseInt(racetrack_id)].user_orders.push({ userid: userid, bet: stake_token})
+          racetracks[parseInt(racetrack_id)].total_token = parseInt(racetracks[parseInt(racetrack_id)].total_token) + parseInt(stake_token)
+          racetracks[parseInt(racetrack_id)].user_orders.push({ userid: userid, bet: stake_token})
           let racetracksToStore = JSON.stringify(racetracks)
           redis.set('racetracks', racetracksToStore)
-          await betOrderDao.add(userid, stake_token, racetrack_id, racetracks.iteration)
-          respMsg.status = 1
-          respMsg.content = '下单成功'
-          res.send(JSON.stringify(respMsg))
+          redis.get('iteration').then(async (iteration)=>{
+            await betOrderDao.add(userid, stake_token, racetrack_id, iteration)
+            respMsg.status = 1
+            respMsg.content = '下单成功'
+            res.send(JSON.stringify(respMsg))
+          })
         })
       } else {
         respMsg.status = 0
@@ -94,14 +96,40 @@ app.get('/allorder', async (req, res) => {
   }
 })
 
-app.get('/racetracks', (req, res) => {
+app.get('/status', (req, res) => {
   let jwtToken = req.get('Authorization')
   let decodedToken = jwt.verify(jwtToken, jwtConfig.secret)
   let tokenData = decodedToken.data
   let userid = tokenData.userid
   if (userid) {
-    redis.get('racetracks').then((result) => {
-      res.send(JSON.stringify(result))
+    // redis.get('racetracks').then((result) => {
+    //   res.send(JSON.stringify(result))
+    // })
+    let racetracks = null
+    let distances = null
+    let isGaming = null
+    let isBetting = null
+    let track_win = null
+    let iteration = null
+    redis.get('racetracks').then((result1)=>{
+      racetracks = JSON.parse(result1)
+      redis.get('distances').then((result2)=>{
+        distances = JSON.parse(result2)
+        redis.get('isGaming').then((result3)=>{
+          isGaming = JSON.parse(result3)
+          redis.get('isBetting').then((result4)=>{
+            isBetting = JSON.parse(result4)
+            redis.get('track_win').then((result5)=>{
+              track_win = JSON.parse(result5)
+              redis.get('iteration').then((result6)=>{
+                iteration = JSON.parse(result6)
+                let respMsg = { racetracks: racetracks, distances: distances, isGaming: isGaming, isBetting: isBetting, track_win: track_win, iteration: iteration}
+                res.send(JSON.stringify(respMsg))
+              })
+            })
+          })
+        })
+      })
     })
   } else {
     res.send('unauthorized')

@@ -51,7 +51,7 @@
     },
     methods: {
       loader() {
-        axios.get(this.gameServer + '/racetracks', {
+        axios.get(this.gameServer + '/status', {
           headers: {
             'Authorization': this.jwtToken
           }
