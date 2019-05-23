@@ -5,15 +5,17 @@
     </div>
     <div v-else>
       <GameStage></GameStage>
-      <UserInfo v-if="jwtToken !== null" :jwt-token="jwtToken"></UserInfo>
-      <BettingOption></BettingOption>
+      <UserInfo v-if="jwtToken !== null" :jwt-token="jwtToken" @update-user-info="getUserInfo"></UserInfo>
+      <Betting v-if="jwtToken !== null" :jwt-token="jwtToken"></Betting>
     </div>
+<!--    <Betting></Betting>-->
+
   </div>
 </template>
 
 <script>
 import GameStage from './components/GameStage.vue'
-import BettingOption from './components/BettingOption.vue'
+import Betting from './components/Betting.vue'
 import LoginComponent from './components/LoginComponent.vue'
 import UserInfo from './components/UserInfo.vue'
 
@@ -21,7 +23,7 @@ export default {
   name: 'app',
   components: {
     GameStage,
-    BettingOption,
+    Betting,
     LoginComponent,
     UserInfo
   },
