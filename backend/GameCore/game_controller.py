@@ -83,9 +83,11 @@ class GameController:
                     cross_lines = sorted(cross_lines, key=operator.itemgetter('dis'), reverse=True)
                     wins.append(cross_lines[0]['id'])
                     ii = 1
-                    while cross_lines[ii]['dis'] == cross_lines[0]['dis']&&ii<len(cross_lines):
+                    while cross_lines[ii]['dis'] == cross_lines[0]['dis']:
                         wins.append(cross_lines[ii]['id'])
                         ii += 1
+                        if ii = len(cross_lines):
+                            break
                 else:
                     wins.append(cross_lines[0])
                 flag = 0
