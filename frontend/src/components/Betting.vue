@@ -22,7 +22,7 @@
 
 <script>
   import axios from 'axios'
-  //todo: 游戏状态信息 画面的更改 对接画面和实际数据 https 调试webhook
+  //todo: https 调试webhook
   export default {
     name: "BettingOption",
     props: {
