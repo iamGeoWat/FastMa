@@ -117,7 +117,7 @@ class GameController:
         token_lost = 0
         token_win = 0
         for i, race in enumerate(race_list):
-            self.game_condition.total_volumn += race['total_token']
+            self.game_condition.total_volume += race['total_token']
             self.game_condition.user_count += len(race['user_orders'])
             if i in r_win:
                 token_win += race['total_token']

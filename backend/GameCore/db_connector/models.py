@@ -40,13 +40,13 @@ class BetOrder(Base):
 class Game(Base):
     __tablename__ = 'game'
     iteration = Column(Integer, primary_key=True, nullable=True)
-    total_volumn = Column(Integer)
+    total_volume = Column(Integer)
     user_count = Column(Integer)
     racetrack_row = Column(Integer, nullable=True)
 
     def __init__(self, it, track_row):
         self.iteration = it
-        self.total_volumn = 0
+        self.total_volume = 0
         self.user_count = 0
         self.racetrack_row = track_row
 

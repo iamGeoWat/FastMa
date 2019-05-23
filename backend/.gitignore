@@ -1,1 +1,4 @@
 /node_modules
+/config/dbConfig.js
+/GameCore/condition.txt
+/GameCore/config.txt
