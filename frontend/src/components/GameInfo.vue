@@ -1,5 +1,5 @@
 <template>
-    <el-card style="margin-top: 10px">
+    <el-card style="margin-top: 10px; font-family: 'Noto Serif SC', serif;">
         <div slot="header">
             游戏状态信息
         </div>

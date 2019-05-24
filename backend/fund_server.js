@@ -101,6 +101,7 @@ app.post('/webhook', async (req, res) => {
   let respMsg = { status: null, result: null }
   try {
     let webhookData = req.body
+    console.log(webhookData)
     let topUpInfo = await topUpDao.queryByCbId(webhookData.event.data.code)
     topUpInfo = topUpInfo[0]
     let userInfo = await userDao.queryByUserId(topUpInfo.userid)
