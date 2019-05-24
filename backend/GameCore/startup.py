@@ -14,7 +14,7 @@ if __name__ == '__main__':
         game.reward()  # 分配奖励
         print('========save game========')
         game.next_iteration()  # 保存游戏状态
-        print('========clear game========')
-        game.clear_game()  # 重置游戏相关数据
         print('========cold time========')
         time.sleep(game.cold_time)  # 冷却时间
+        print('========clear game========')
+        game.clear_game()  # 重置游戏相关数据
