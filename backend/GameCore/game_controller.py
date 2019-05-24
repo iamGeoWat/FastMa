@@ -169,6 +169,16 @@ class GameController:
         next_i = self.game_condition['iteration'] + 1
         add_iteration(next_i)
 
+    def clear_game(self):
+        self.racetracks = [0] * int(config.properties['racetrack_quantity'])
+
+        redis = get_redis()
+        redis.set('distances', json.dumps(self.racetracks))
+        redis.set('track_win', json.dumps(list()))
+
+        raw_tracks = [{'total_token': 0, 'user_orders': []}] * int(config.properties['racetrack_quantity'])
+        redis.set('racetracks', json.dumps(raw_tracks))
+
     """
     从指定的接口获取一个block_id
     """
