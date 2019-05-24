@@ -62,7 +62,7 @@ class GameController:
 
             # 马跑动
             for i, dis in enumerate(digit_list):
-                self.racetracks[i] += int(dis)
+                self.racetracks[i] += int(dis)/10
             print(self.racetracks)
             redis.set('distances', json.dumps(self.racetracks))
 
