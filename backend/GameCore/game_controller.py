@@ -94,7 +94,7 @@ class GameController:
             else:
                 time.sleep(1)
 
-        wins_id = [wins[0]['id']]
+        wins_id = [wins[0]]
         if len(wins) > 1:
             for i in wins:
                 wins_id.append(i['id'])
