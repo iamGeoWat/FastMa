@@ -89,7 +89,7 @@ class GameController:
                         if ii == len(cross_lines):
                             break
                 else:
-                    wins.append(cross_lines[0])
+                    wins.append(cross_lines[0]['id'])
                 flag = 0
             else:
                 time.sleep(1)
