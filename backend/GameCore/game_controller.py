@@ -97,9 +97,9 @@ class GameController:
         wins_id = []
         if len(wins) > 1:
             for i in wins:
-                wins_id.append(i['id'])
+                wins_id.append(i)
         else:
-            wins_id = [wins[0]['id']]
+            wins_id = [wins[0]]
         redis.set('track_win', json.dumps(wins_id))
 
         race_list = json.loads(str(redis.get('racetracks'), encoding='utf-8'))
