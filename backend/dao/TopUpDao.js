@@ -43,6 +43,20 @@ module.exports = class TopUpDao {
       await conn.destroy()
     }
   }
+  async queryByCbId (cb_id) {
+    let conn = await dbConn()
+    try {
+      let result = await conn.query(queryString.queryByCbId, cb_id)
+      result = JSON.parse(JSON.stringify(result))
+      return result
+    } catch (e) {
+      console.log(e)
+      throw e
+    } finally {
+      await conn.release()
+      await conn.destroy()
+    }
+  }
   async modStatusByCbId (cb_id, status) {
     let conn = await dbConn()
     try {
