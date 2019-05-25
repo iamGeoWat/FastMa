@@ -82,7 +82,7 @@
     methods: {
       toggleWithdrawHistory() {
         this.showWithdrawHistory = !this.showWithdrawHistory
-        axios.get(this.fundServer + '/withdraw', {
+        axios.get(this.apiServer + '/withdraw', {
           headers: {
             'Authorization': this.jwtToken
           }
@@ -104,7 +104,7 @@
       },
       goWithdraw() {
         if (this.withdraw_amount !== null && this.withdraw_amount%100 === 0 && this.withdraw_amount !== 0 && this.eos_account !== null) {
-          axios.post(this.fundServer + '/withdraw', {
+          axios.post(this.apiServer + '/withdraw', {
             eos_memo: this.eos_memo?this.eos_memo:' ',
             eos_account: this.eos_account,
             amount_token: this.withdraw_amount
@@ -145,7 +145,7 @@
       },
       toggleTopUpHistory() {
         this.showTopUpHistory = !this.showTopUpHistory
-        axios.get(this.fundServer + '/topup', {
+        axios.get(this.apiServer + '/topup', {
           headers: {
             'Authorization': this.jwtToken
           }
@@ -174,7 +174,7 @@
       },
       goTopUp() {
         if (this.order_size !== null && this.order_size%100 === 0 && this.order_size !== 0) {
-          axios.post(this.fundServer + '/topup', {
+          axios.post(this.apiServer + '/topup', {
             order_size: this.order_size
           }, {
             headers: {
@@ -201,7 +201,7 @@
         }
       },
       getUserInfo() {
-        axios.get(this.userServer + '/userInfo', {
+        axios.get(this.apiServer + '/userInfo', {
           headers: {
             'Authorization': this.jwtToken
           }

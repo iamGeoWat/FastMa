@@ -45,7 +45,7 @@
     },
     methods: {
       loadInfo() {
-        axios.get(this.gameServer + '/status', {
+        axios.get(this.apiServer + '/status', {
           headers: {
             'Authorization': this.jwtToken
           }
@@ -61,7 +61,7 @@
         })
       },
       loadBlockId() {
-        axios.get(this.gameServer + '/blockid_backup', {
+        axios.get(this.apiServer + '/blockid_backup', {
           headers: {
             'Authorization': this.jwtToken
           }

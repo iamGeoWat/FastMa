@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "forever start user_server.js && forever start fund_server.js && forever start page_server.js && forever start game_server.js",
+    "start": "forever start page_server.js && forever start api_server.js",
     "dev": "node user_server.js && node fund_server.js && node game_engine.js"
   },
   "author": "",

@@ -37,7 +37,7 @@
     methods: {
       doBet() {
         if (this.selectedTrack !== null && this.stake_token !== null) {
-          axios.post(this.gameServer + '/order', {
+          axios.post(this.apiServer + '/order', {
             stake_token: this.stake_token,
             racetrack_id: this.selectedTrack
           }, {
@@ -65,7 +65,7 @@
         }
       },
       loadAllBetHistory() {
-        axios.get(this.gameServer + '/allorder', {
+        axios.get(this.apiServer + '/allorder', {
           headers: {
             'Authorization': this.jwtToken
           }

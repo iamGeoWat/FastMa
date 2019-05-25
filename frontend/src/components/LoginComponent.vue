@@ -59,7 +59,7 @@
             position: "bottom-right"
           })
         } else {
-          axios.post(this.userServer + '/register', {
+          axios.post(this.apiServer + '/register', {
             username: this.username,
             password: this.password
           }).then((res) => {
@@ -89,7 +89,7 @@
             position: "bottom-right"
           })
         } else {
-          axios.post(this.userServer + '/login', {
+          axios.post(this.apiServer + '/login', {
             username: this.username,
             password: this.password
           }).then((res) => {

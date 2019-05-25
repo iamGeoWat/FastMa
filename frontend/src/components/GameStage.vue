@@ -51,7 +51,7 @@
     },
     methods: {
       loader() {
-        axios.get(this.gameServer + '/status', {
+        axios.get(this.apiServer + '/status', {
           headers: {
             'Authorization': this.jwtToken
           }
