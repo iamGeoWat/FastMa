@@ -379,7 +379,7 @@ app.get('/blockid_backup', async (req, res) => {
   if (userid) {
     let blockids = await blockidBackupDao.query()
     if (blockids) {
-      res.send(JSON.stringify(blockids.slice(-1, -100)))
+      res.send(JSON.stringify(blockids.slice(-100, -1)))
     } else {
       res.send('no record')
     }
