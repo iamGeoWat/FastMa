@@ -4,7 +4,7 @@ import './plugins/element.js'
 
 Vue.config.productionTip = false
 // let serverLocation = 'http://localhost'
-let serverLocation = 'https://45.32.135.124'
+let serverLocation = 'https://fastma.io'
 // Vue.prototype.userServer = serverLocation + ':8801'
 // Vue.prototype.fundServer = serverLocation + ':8801'
 // Vue.prototype.gameServer = serverLocation + ':8801'
