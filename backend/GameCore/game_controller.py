@@ -54,6 +54,7 @@ class GameController:
             # 获取赛马进度
             block, block_time = self.get_block_id()
             digit_list = list(filter(lambda x: str.isdigit(x) and x != '0', block['id']))
+            digit_list.reverse()
             while len(digit_list) < int(config.properties['racetrack_quantity']):
                 bid = self.get_block_id()
                 digit_list = list(filter(lambda x: str.isdigit(x) and x != '0', bid))
