@@ -57,8 +57,8 @@
           }
         }).then((res)=>{
           let info = JSON.parse(JSON.stringify(res.data))
-          console.log(info)
-          if (parseInt(info.isGaming && this.engineIntv === this.lowIntv)) {
+          // console.log(info)
+          if (parseInt(info.isGaming) && this.engineIntv === this.lowIntv) {
             for (let i = 0; i < sprites.waitingHorses.length; i++ ) {
               containers.fullView.removeChild(sprites.waitingHorses[i])
               containers.fullView.addChild(sprites.horses[i])
@@ -75,7 +75,10 @@
               this.track_win.push(info.track_win[i])
             }
             this.hasWinner = true
-            for (let i = 0; i < sprites.horses[i].length; i++ ) {
+            for (let i = 0; i < sprites.horses.length; i++ ) {
+              sprites.horses[i].x = this.distances[i]/100 * (containers.fullView.width - 150 - window.innerWidth) + (20 + 8 * sprites.horses.length - 8 * (i-1))
+            }
+            for (let i = 0; i < sprites.horses.length; i++ ) {
               sprites.waitingHorses[i].x = sprites.horses[i].x
               containers.fullView.removeChild(sprites.horses[i])
               containers.fullView.addChild(sprites.waitingHorses[i])
@@ -124,7 +127,7 @@
       },
       runState() {
         for (let i = 0; i < sprites.horses.length; i++ ) {
-          sprites.horses[i].x = this.distances[i] * (window.innerWidth + 150)/100
+          sprites.horses[i].x = this.distances[i]/100 * (containers.fullView.width - 150 - window.innerWidth) + (20 + 8 * sprites.horses.length - 8 * (i-1))
         }
         this.cameraScroll()
         // if (containers.fullView.x <= -2350 + window.innerWidth) {
@@ -141,7 +144,9 @@
           state = this.waitingState
         }, 10000)
       },
-      waitingState() {},
+      waitingState() {
+        containers.fullView.x = 0
+      },
       gameLoop(delta) {
         state(delta)
       },
@@ -328,7 +333,7 @@
     mounted() {
       // PIXI application
       pixiApp = new PIXI.Application({
-        width: window.innerWidth,
+        width: window.innerWidth - 15,
         // width: 2400,
         height: 365,
         antialias: false,
