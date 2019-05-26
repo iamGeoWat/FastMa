@@ -24,7 +24,9 @@
     track_floor: null,
     sign: null,
     audiences: [],
-    waitingHorses: []
+    waitingHorses: [],
+    start_line: null,
+    end_line: null
   }
 
   let state = function () {}
@@ -142,6 +144,7 @@
             sprites.waitingHorses[i].x = horsesToLeft + horseXOffset * sprites.waitingHorses.length - horseXOffset * (i-1)
           }
           state = this.waitingState
+          this.eventBus.$emit('updateUserInfo')
         }, 10000)
       },
       waitingState() {
@@ -281,6 +284,16 @@
             containers.fullView.addChild(sprites.track_floor)
           }
         }
+        // load start end line
+        sprites.start_line = new PIXI.Sprite(sheet.textures['start_end_line.png'])
+        sprites.end_line = new PIXI.Sprite(sheet.textures['start_end_line.png'])
+        sprites.start_line.x = 90
+        sprites.start_line.y = 120
+        sprites.end_line.x = 2240
+        sprites.end_line.y = 120
+        containers.fullView.addChild(sprites.start_line)
+        containers.fullView.addChild(sprites.end_line)
+
         // load animated horses
         let horseYOffset = 25
         let horseXOffset = 8
@@ -321,7 +334,7 @@
         sprites.sign.x = 2200
         containers.fullView.addChild(sprites.sign)
         sprites.road_decoration.y = 260
-        sprites.road_decoration.x = 2240
+        sprites.road_decoration.x = 2225
         containers.fullView.addChild(sprites.road_decoration)
         // load everything to stage
         pixiApp.stage.addChild(containers.fullView)
@@ -348,7 +361,11 @@
       // load textures
       PIXI.loader.add("images/fastma_spritesheet.json").load(this.gameLoadSetup)
       // start loader engine
+      this.loader()
       this.loaderEngine = setInterval(this.loader, this.engineIntv)
+    },
+    beforeDestroy() {
+      clearInterval(this.loaderEngine)
     }
   }
 </script>

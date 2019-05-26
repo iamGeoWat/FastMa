@@ -22,7 +22,6 @@
 
 <script>
   import axios from 'axios'
-  //todo: https 调试webhook
   export default {
     name: "BettingOption",
     props: {
@@ -30,9 +29,12 @@
     },
     mounted() {
       this.loadAllBetHistory()
-      setInterval(()=>{
+      this.historyLoadEngine = setInterval(()=>{
         this.loadAllBetHistory()
       }, 5000)
+    },
+    beforeDestroy () {
+      clearInterval(this.historyLoadEngine)
     },
     methods: {
       doBet() {
@@ -80,6 +82,7 @@
     },
     data() {
       return {
+        historyLoadEngine: null,
         betHistoryData: [],
         stake_token: null,
         selectedTrack: null,

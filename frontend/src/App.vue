@@ -8,6 +8,9 @@
       <UserInfo v-if="jwtToken !== null" :jwt-token="jwtToken"></UserInfo>
       <Betting v-if="jwtToken !== null" :jwt-token="jwtToken"></Betting>
       <GameInfo v-if="jwtToken !== null" :jwt-token="jwtToken"></GameInfo>
+      <div style="text-align: center">
+        <el-button type="danger" style="width: 98%; margin-top: 10px; height: 50px" @click="logOut">退出登录</el-button>
+      </div>
     </div>
   </div>
 </template>
@@ -33,9 +36,23 @@ export default {
       jwtToken: null
     }
   },
+  mounted() {
+    let storage = window.localStorage
+    let zmkm = storage.getItem('zmkm')
+    if (zmkm) {
+      this.jwtToken = zmkm
+    }
+  },
   methods: {
     handleLogin(data) {
+      let storage = window.localStorage
+      storage.setItem('zmkm', data)
       this.jwtToken = data
+    },
+    logOut() {
+      let storage = window.localStorage
+      storage.removeItem('zmkm')
+      this.jwtToken = null
     }
   }
 }
